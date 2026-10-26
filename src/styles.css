@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@import "@fontsource-variable/onest";
+
+/* ─── Tokens ─────────────────────────────────────────────
+   Paper is a cool workshop grey (not cream), ink is a deep blue-black.
+   "Cold" blue is the one action colour; "hot" orange-red only ever means late.
+   Built for a phone in Marmaris sunlight: high contrast, big type, no hairline greys. */
+@theme {
+  --font-sans: "Onest Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #f2f4f5;
+  --color-surface: #ffffff;
+  --color-ink: #0f1d29;
+  --color-ink-2: #46535f;
+  --color-ink-3: #6b7783;
+  --color-line: #dbe1e5;
+  --color-sunk: #e7ebee;
+
+  --color-cold: #0b5cc4;
+  --color-cold-press: #094ba0;
+  --color-cold-tint: #e3edfb;
+
+  --color-hot: #c2410c;
+  --color-hot-tint: #fcebe2;
+  --color-warm: #8a5d00;
+  --color-warm-tint: #fbf0d6;
+  --color-ok: #1b7a42;
+  --color-ok-tint: #e1f2e7;
+  --color-wa: #128c4a;
+  --color-wa-press: #0e7239;
+
+  --text-sm: 0.875rem;   /* 14 */
+  --text-base: 1.0625rem; /* 17 */
+  --text-lg: 1.25rem;    /* 20 */
+  --text-xl: 1.625rem;   /* 26 */
+  --text-2xl: 2rem;      /* 32 */
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ─── Mobile-native baseline ─────────────────────────── */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--color-paper);
+}
+html, body { overscroll-behavior: none; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.45;
+  font-feature-settings: "tnum" 0;
+  -webkit-font-smoothing: antialiased;
+}
+button, a, [role="button"], label.tap {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+input, textarea, select { font: inherit; font-size: max(16px, 1em); }
+.num { font-variant-numeric: tabular-nums; }
+
+:focus-visible { outline: 3px solid var(--color-cold); outline-offset: 2px; border-radius: 8px; }
+
+/* Press feedback fires on pointer-down via :active (no hover on touch). */
+.press { transition: transform 140ms var(--ease-out), background-color 140ms ease; }
+.press:active { transform: scale(0.97); }
+
+.scroll-contain { overscroll-behavior: contain; }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pt-safe { padding-top: env(safe-area-inset-top); }
+
+/* Save-confirmation stamp — the one orchestrated moment in the app. */
+@keyframes stamp {
+  from { opacity: 0; transform: scale(1.12) rotate(-4deg); }
+  to   { opacity: 1; transform: scale(1) rotate(-2deg); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-stamp { animation: stamp 420ms var(--ease-out) both; }
+.anim-rise { animation: rise 320ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .press:active { transform: none; }
+  .anim-stamp, .anim-rise { animation: fade 200ms ease both; }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+}
